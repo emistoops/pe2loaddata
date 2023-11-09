@@ -70,7 +70,7 @@ def headless(
     channels = dict([(str(k).replace(" ", ""), v) for (k, v) in channels.items()])
 
     if not index_file:
-        index_file = os.path.join(index_directory, "Index.idx.xml")
+        index_file = os.path.join(index_directory, "Index.xml")
 
     if "s3" in index_file:
         remote = True
