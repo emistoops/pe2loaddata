@@ -3,6 +3,7 @@ import os
 import shutil
 import tempfile
 import xml.sax
+import glob
 
 import click
 
@@ -70,7 +71,17 @@ def headless(
     channels = dict([(str(k).replace(" ", ""), v) for (k, v) in channels.items()])
 
     if not index_file:
-        index_file = os.path.join(index_directory, "Index.xml")
+        file_path_check = glob.glob(os.path.join(index_directory, "Index.idx.xml"))
+        if not file_path_check:  # If Index.idx.xml not found, search for Index.xml
+            file_path_check = glob.glob(os.path.join(index_directory, "Index.xml"))
+
+        if file_path_check:  # If file(s) found, take the first one
+            file_path_check = file_path_check[0]
+            print(f"Found file: {file_path_check}")
+            index_file = os.path.join(index_directory, file_path_check)
+        else:
+            print("No Index.idx.xml or Index.xml found in the directory.")
+            # Handle case when the file is not found
 
     if "s3" in index_file:
         remote = True
